@@ -1,71 +1,50 @@
-# 🎸 NOT YET Band Portfolio Website 🎶
+# React + TypeScript + Vite
 
-Welcome to the official portfolio website of the music band **NOT YET**! This site is built using React, Shadcn UI, and Tailwind CSS to showcase the band's music, events, and multimedia content.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 📑 Table of Contents
+Currently, two official plugins are available:
 
-- [✨ Features](#-features)
-- [🛠 Tech Stack](#-tech-stack)
-- [🚀 Getting Started](#-getting-started)
-  - [🔧 Prerequisites](#prerequisites)
-  - [💻 Installation](#installation)
-  - [🎯 Running the Development Server](#running-the-development-server)
-- [📂 Project Structure](#-project-structure)
-- [📜 License](#-license)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## ✨ Features
+## Expanding the ESLint configuration
 
-- **Homepage:** Introduction to the band, latest news, and featured events.
-- **Music Gallery:** Display of the band's discography with integrated audio and video playback.
-- **Event Calendar:** Information on upcoming shows, tours, and events.
-- **Contact Form:** Allows visitors to reach out for bookings or inquiries.
-- **Responsive Design:** Optimized for viewing on all screen sizes, from mobile to desktop.
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-## 🛠 Tech Stack
+- Configure the top-level `parserOptions` property like this:
 
-- **⚛️ React:** A JavaScript library for building interactive user interfaces.
-- **🖌️ Shadcn UI:** A library of accessible and customizable UI components.
-- **💨 Tailwind CSS:** A utility-first CSS framework for rapidly building custom designs.
-- **🔀 React Router:** For managing navigation and routing within the application.
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-## 🚀 Getting Started
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-### 🔧 Prerequisites
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
 
-Make sure you have the following tools installed:
-
-- [Node.js](https://nodejs.org/) (version 14 or higher)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-
-### 💻 Installation
-
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/yourusername/not-yet-band-portfolio.git
-    ```
-
-2. Navigate to the project directory:
-
-    ```bash
-    cd not-yet-band-portfolio
-    ```
-
-3. Install the dependencies:
-
-    ```bash
-    npm install
-    ```
-
-    or, if you use Yarn:
-
-    ```bash
-    yarn install
-    ```
-
-### 🎯 Running the Development Server
-
-To start the local development server, use:
-
-```bash
-npm start
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
